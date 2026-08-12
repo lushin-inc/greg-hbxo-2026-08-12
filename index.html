@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Greg — Outbound Prospecting</title>
+<style>
+:root{
+  --navy:#21245C;
+  --fresh:#00ADED;
+  --energetic:#0045C2;
+  --red:#E34554;
+  --fire:#F05A28;
+  --gold:#FAB040;
+  --ink:#15161f;
+  --soft:#5b6070;
+  --line:#e9ebf2;
+  --gray:#f5f6fa;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{
+  margin:0;background:#fff;color:var(--ink);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:17px;line-height:1.62;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:860px;margin:0 auto;padding:40px 22px 90px}
+
+/* ---------- top nav ---------- */
+nav{display:flex;flex-wrap:wrap;gap:6px 4px;margin:0 0 34px}
+nav a{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;
+  color:var(--soft);text-decoration:none;padding:7px 11px;border-radius:8px;
+}
+nav a:hover{color:var(--navy);background:var(--gray)}
+nav a.on{color:#fff;background:var(--navy)}
+
+/* ---------- home ---------- */
+.home-head{margin:0 0 26px}
+.eyebrow{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:12px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--soft);margin:0 0 5px;font-weight:500;
+}
+h1{font-size:30px;line-height:1.2;font-weight:600;color:var(--navy);margin:0;letter-spacing:-.015em}
+
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.tile{
+  position:relative;display:flex;flex-direction:column;justify-content:space-between;
+  min-height:320px;padding:24px;border-radius:18px;text-decoration:none;color:#fff;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.tile:hover{transform:translateY(-3px)}
+.tile .ico{
+  width:48px;height:48px;border-radius:13px;background:rgba(255,255,255,.17);
+  display:flex;align-items:center;justify-content:center;
+}
+.tile .ico svg{width:25px;height:25px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tile .ctx{font-size:15px;font-weight:400;opacity:.85;line-height:1.35;margin:0 0 3px}
+.tile .big{font-size:29px;font-weight:600;line-height:1.12;letter-spacing:-.02em;margin:0}
+.tile-wide{grid-column:1 / -1;min-height:150px}
+.tile-wide .big{font-size:25px}
+
+/* ---------- section views ---------- */
+.view{display:none}
+.view.on{display:block}
+.sec-head{border-radius:18px;padding:26px 26px 28px;color:#fff;margin:0 0 34px}
+.sec-head .ctx{font-size:15px;font-weight:400;opacity:.85;margin:0 0 3px;line-height:1.35}
+.sec-head h2{font-size:29px;font-weight:600;line-height:1.14;letter-spacing:-.02em;margin:0;color:#fff}
+
+/* ---------- rules ---------- */
+.rule{margin:0 0 44px}
+.rule:last-child{margin-bottom:0}
+.num{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;font-weight:700;letter-spacing:.12em;
+  color:var(--soft);margin:0 0 3px;
+}
+h3{font-size:22px;line-height:1.3;font-weight:600;color:var(--navy);margin:0 0 12px;letter-spacing:-.012em}
+p{margin:0 0 14px}
+ul{margin:0 0 16px;padding-left:21px}
+li{margin:0 0 8px}
+li::marker{color:var(--accent,var(--fresh))}
+.lead-in{margin:0 0 8px;font-weight:600;color:var(--navy)}
+mark{background:linear-gradient(transparent 58%, rgba(250,176,64,.55) 58%);padding:0 1px;color:inherit}
+
+/* ---------- script boxes ---------- */
+.script{
+  border-left:3px solid var(--accent,var(--fresh));background:var(--gray);
+  border-radius:0 12px 12px 0;padding:18px 20px 16px;margin:0 0 18px;position:relative;
+}
+.script .label{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--soft);
+  display:block;margin-bottom:10px;font-weight:600;padding-right:76px;
+}
+.say{display:block;font-style:italic;font-size:17px;line-height:1.65}
+.say + .say{margin-top:12px}
+.beat{font-style:normal;font-size:13px;color:var(--soft);display:block;margin:12px 0 2px}
+.slot{font-style:normal;font-weight:600;color:var(--navy);border-bottom:2px solid var(--gold)}
+.copy{
+  position:absolute;top:12px;right:12px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.06em;text-transform:uppercase;font-weight:600;
+  background:#fff;color:var(--soft);border:1px solid var(--line);
+  border-radius:7px;padding:6px 10px;cursor:pointer;
+}
+.copy:hover{color:var(--navy)}
+.copy.done{color:var(--fresh);border-color:var(--fresh)}
+
+/* ---------- dont ---------- */
+.dont{border-left:3px solid var(--red);background:#fdf3f4;border-radius:0 12px 12px 0;padding:18px 20px;margin:0 0 18px}
+.dont .label{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--red);
+  display:block;margin-bottom:8px;font-weight:700;
+}
+.dont p:last-child{margin-bottom:0}
+
+/* ---------- collapsible callout ---------- */
+details{
+  border:1px solid var(--line);border-left:3px solid var(--accent,var(--fresh));
+  background:#fbfcfe;border-radius:0 12px 12px 0;margin:0 0 18px;
+}
+summary{
+  cursor:pointer;list-style:none;padding:16px 20px;font-weight:600;
+  color:var(--navy);font-size:16px;display:flex;align-items:center;gap:10px;
+}
+summary::-webkit-details-marker{display:none}
+summary::before{
+  content:"›";color:var(--accent,var(--fresh));font-size:22px;line-height:1;
+  transform:rotate(90deg);transition:transform .15s ease;display:inline-block;
+}
+details[open] summary::before{transform:rotate(-90deg)}
+details .inner{padding:0 20px 18px}
+details .inner > :last-child{margin-bottom:0}
+
+/* ---------- tracker ---------- */
+.tracker{border:1px solid var(--line);border-radius:14px;overflow:hidden;margin:0 0 10px}
+.trow{display:flex;align-items:center;gap:14px;padding:15px 18px;border-bottom:1px solid var(--line)}
+.trow:last-of-type{border-bottom:none}
+.tname{flex:1;min-width:0}
+.tname b{display:block;font-weight:600;color:var(--navy);font-size:16px;line-height:1.35}
+.tname span{display:block;font-size:13px;color:var(--soft);line-height:1.4}
+.tcount{
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:17px;font-weight:700;color:var(--navy);white-space:nowrap;
+  display:flex;align-items:center;gap:5px;
+}
+.tcount.hit{color:var(--fire)}
+.tcount input{
+  font:inherit;color:var(--soft);width:44px;padding:3px 4px;text-align:center;
+  border:1px solid var(--line);border-radius:7px;background:#fff;
+}
+.tcount input:focus{outline:none;border-color:var(--fire);color:var(--navy)}
+.tbtn{
+  width:40px;height:40px;flex:none;border-radius:10px;border:1px solid var(--line);
+  background:#fff;color:var(--navy);font-size:20px;line-height:1;cursor:pointer;font-weight:600;
+}
+.tbtn:hover{border-color:var(--fire);color:var(--fire)}
+.bar{height:4px;background:var(--gray)}
+.bar i{display:block;height:100%;width:0;background:var(--fire);transition:width .18s ease}
+.bar i.hit{background:var(--gold)}
+.treset{
+  background:none;border:none;padding:0;cursor:pointer;
+  font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--soft);
+}
+.treset:hover{color:var(--red)}
+.tnote{font-size:13px;color:var(--soft);margin:0 0 6px}
+.tnote:last-of-type{margin-bottom:22px}
+
+/* ---------- checklist ---------- */
+.check{list-style:none;padding:0;margin:0 0 16px}
+.check li{display:flex;gap:12px;align-items:flex-start;margin:0;padding:12px 2px}
+.check input{
+  appearance:none;-webkit-appearance:none;flex:none;width:22px;height:22px;margin:1px 0 0;
+  border:2px solid var(--line);border-radius:7px;cursor:pointer;background:#fff;position:relative;
+}
+.check input:checked{background:var(--fire);border-color:var(--fire)}
+.check input:checked::after{
+  content:"";position:absolute;left:6.5px;top:2.5px;width:5px;height:10px;
+  border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(43deg);
+}
+.check input:checked + span{color:var(--soft);text-decoration:line-through}
+.check span{line-height:1.5}
+
+/* ---------- recap ---------- */
+.recap ol{padding-left:22px;margin:0 0 24px}
+.recap ol li{margin:0 0 11px}
+.recap ol li::marker{color:var(--navy);font-weight:700}
+.takeaway{background:var(--navy);color:#fff;border-radius:14px;padding:24px 26px;font-size:18px;line-height:1.55}
+.takeaway b{color:var(--gold);font-weight:600}
+
+footer{margin-top:52px;font-size:14px;color:var(--soft);line-height:1.7}
+footer a{color:var(--soft)}
+
+@media(max-width:560px){
+  .wrap{padding:28px 16px 70px}
+  h1{font-size:25px}
+  .tiles{gap:12px}
+  .tile{min-height:210px;padding:18px;border-radius:15px}
+  .tile .ico{width:40px;height:40px;border-radius:11px}
+  .tile .ico svg{width:21px;height:21px}
+  .tile .ctx{font-size:13px}
+  .tile .big{font-size:20px}
+  .tile-wide{min-height:120px}
+  .tile-wide .big{font-size:20px}
+  .sec-head{padding:20px 20px 22px;border-radius:15px}
+  .sec-head h2{font-size:23px}
+  .sec-head .ctx{font-size:13px}
+  h3{font-size:20px}
+  .trow{gap:10px;padding:13px 12px}
+  .tbtn{width:36px;height:36px}
+  .tname b{font-size:15px}
+  .tcount{font-size:15px}
+  .tcount input{width:40px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<nav id="nav"></nav>
+
+<!-- ============ HOME ============ -->
+<div class="view" id="v-home">
+  <div class="home-head">
+    <p class="eyebrow">Greg</p>
+    <h1>Outbound Prospecting</h1>
+  </div>
+  <div class="tiles" id="tiles"></div>
+</div>
+
+<!-- ============ ON THE CALL ============ -->
+<div class="view" id="v-call" style="--accent:#00ADED">
+  <div class="sec-head" data-head="call"></div>
+
+  <section class="rule">
+    <p class="num">RULE 1</p>
+    <h3>Rebuild the pain menu around the tool they already have</h3>
+    <p>Almost everyone who answers already has something in place, so a generic menu gets "not relevant" every time.</p>
+    <p class="lead-in">What changes and what doesn't:</p>
+    <ul>
+      <li>Pattern interrupt — never changes</li>
+      <li>30-second commercial — never changes</li>
+      <li><mark>Pain menu — the only part you rewrite</mark></li>
+    </ul>
+    <p class="lead-in">Rebuild it around what's imperfect about the tool they've got:</p>
+    <ul>
+      <li>Coverage gaps — projects, regions, or verticals it misses</li>
+      <li>Data that's stale or thin where they need it most</li>
+      <li>Reps who don't actually use it</li>
+      <li>Leads coming in, but not the right business at the right margin</li>
+    </ul>
+    <p class="lead-in">The first 40% of the call is just clearing barriers:</p>
+    <ul>
+      <li>The interrupt and the commercial fit round peg, round hole</li>
+      <li>You can already run both in your sleep</li>
+      <li>The pain points are the only part worth your prep time</li>
+    </ul>
+    <div class="dont">
+      <span class="label">Where this goes wrong</span>
+      <p>Running the same generic menu on every call and blaming the list. Your list quality is fine and your answer rate is fine. Only the menu is out of date.</p>
+    </div>
+  </section>
+
+  <section class="rule">
+    <p class="num">RULE 2</p>
+    <h3>When they brush you off, ask for advice</h3>
+    <p>You don't get real pain points from research — you get them from the people who just told you no.</p>
+
+    <div class="script">
+      <button class="copy" type="button">Copy</button>
+      <span class="label">Say this after they brush you off</span>
+      <span class="say">"All right, I think you know what I do. Can I take the sales hat off and ask your advice for my next call? I promise I won't ask any questions."</span>
+      <span class="beat">They say sure.</span>
+      <span class="say">"Based on what I just said — again, advice for my next call — what should I have said?"</span>
+    </div>
+
+    <div class="script">
+      <button class="copy" type="button">Copy</button>
+      <span class="label">Say this if they're happy with what they have</span>
+      <span class="say">"I know you've got a solution you're happy with. What's the thing that could be 10% better?"</span>
+      <span class="beat">Then, whatever they say:</span>
+      <span class="say">"Great, thank you so much. Appreciate it."</span>
+      <span class="beat">Hang up. Next call.</span>
+    </div>
+
+    <p class="lead-in">Use what they tell you on the very next dial:</p>
+    <ul>
+      <li>Someone tells you they can't find enough good people</li>
+      <li>Next call opens with "we typically work with people who can't find enough good people — any of that relevant?"</li>
+      <li>You're collecting clues, not pitching</li>
+    </ul>
+
+    <div class="dont">
+      <span class="label">Where this goes wrong</span>
+      <p>Asking a follow-up question after they give you the answer. You promised you wouldn't. Ask one, and the next twenty people you try this on can smell it.</p>
+    </div>
+  </section>
+
+  <section class="rule">
+    <p class="num">RULE 3</p>
+    <h3>Interview every customer who switches to you</h3>
+    <p>Someone who just left a competitor hands you the exact sentence that makes the next prospect flinch.</p>
+
+    <div class="script">
+      <button class="copy" type="button">Copy</button>
+      <span class="label">Ask this on every switch you sign for the next six months</span>
+      <span class="say">"What's the reason you guys switched? What was the problem you had before?"</span>
+      <span class="beat">Then the one that gets you the real answer:</span>
+      <span class="say">"It probably wasn't terrible. What was the thing that needed to be 10% better, that made you make the leap?"</span>
+    </div>
+
+    <ul>
+      <li>Write it down in their words, not your summary of it</li>
+      <li>Keep a running doc of the answers</li>
+      <li>Those answers become the pain menu in Rule 1</li>
+    </ul>
+  </section>
+</div>
+
+<!-- ============ REFERRALS ============ -->
+<div class="view" id="v-ref" style="--accent:#E34554">
+  <div class="sec-head" data-head="ref"></div>
+
+  <section class="rule">
+    <p class="num">RULE 4</p>
+    <h3>Ask the moment they sign</h3>
+    <p>People are never more excited about a purchase than right after they make it.</p>
+    <ul>
+      <li>Rapport is high and they're happy</li>
+      <li>It's before the account gets handed over the fence</li>
+      <li><mark>That's the window — not next quarter</mark></li>
+    </ul>
+
+    <div class="script">
+      <button class="copy" type="button">Copy</button>
+      <span class="label">Say this to open the ask</span>
+      <span class="say">"I need your help with something. I'm really trying to get <span class="slot">5</span> new customers this quarter — I've got <span class="slot">3</span> so far."</span>
+      <span class="beat">Give them a real number. It engages people.</span>
+      <span class="say">"Do you know anybody who <span class="slot">…</span>?"</span>
+    </div>
+
+    <p class="lead-in">Then describe traits and places, not pain points:</p>
+    <ul>
+      <li>They've never heard that person talk about a pain point, so naming one gets you nothing</li>
+      <li>Name what they can actually see — where they run into them, what kind of shop it is, what they're trying to do</li>
+      <li>You're turning a light bulb on. A person pops into their head and they can't control it</li>
+    </ul>
+
+    <div class="script">
+      <button class="copy" type="button">Copy</button>
+      <span class="label">Say this to fill in the "anybody who" line</span>
+      <span class="say">"Do you know any business owners that have high integrity, they're in growth mode, and they care about their people? Specifically any software, technology, marketing companies, manufacturing, construction — anything where they need to grow and they need to get leads for their people."</span>
+    </div>
+
+    <details>
+      <summary>👀 The 20-minute exercise that makes this work — do it before your next ask</summary>
+      <div class="inner">
+        <p>Write out your top 10 favorite sales you've ever made. For each one, list every trait that describes that person and that company.</p>
+        <ul>
+          <li>The company — size, vertical, how they buy</li>
+          <li>The person — role, how they think, what they're under pressure to do</li>
+          <li>Where someone would run into them — conferences, associations, boards, industry groups</li>
+        </ul>
+        <p>That list is your "do you know anybody who" line. You want to be referred into more people like the ones you already loved selling to.</p>
+        <p class="lead-in">While you're in there:</p>
+        <ul>
+          <li>Check the LinkedIn profiles of your best recent wins for groups, associations, and conferences</li>
+          <li>Ask the live ones straight out: "Are you involved in any professional development groups or associations? Is there a conference you go to every year?"</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="rule">
+    <p class="num">RULE 5</p>
+    <h3>Turn the name into an introduction</h3>
+    <p>A name is not a referral. This is the line that makes the difference, and almost nobody says it.</p>
+
+    <div class="script">
+      <button class="copy" type="button">Copy</button>
+      <span class="label">Say this the second they give you a name</span>
+      <span class="say">"Awesome, thanks. Do me a favor — do you ever see them at quarterly conferences, or on a Zoom once a month?"</span>
+      <span class="beat">Then:</span>
+      <span class="say">"Tell them about your experience with us. Tell them you think they should talk to me, and ask if they're open to it. If they're not, don't worry about it. But if they are, just send a one-line email intro — <span class="slot">Greg</span>, meet Bob. Bob, meet <span class="slot">Greg</span>. Let's take it from here."</span>
+    </div>
+
+    <p>People don't think to do that on their own. Say it out loud and they remember, and they do it.</p>
+
+    <div class="dont">
+      <span class="label">Where this goes wrong</span>
+      <p>Taking the name and running with it yourself. A name you cold-call is still a cold call. The introduction — in their words, about their experience — is the whole reason referrals close.</p>
+    </div>
+  </section>
+</div>
+
+<!-- ============ OFF THE PHONE ============ -->
+<div class="view" id="v-off" style="--accent:#0045C2">
+  <div class="sec-head" data-head="off"></div>
+
+  <section class="rule">
+    <p class="num">RULE 6</p>
+    <h3>Get on association agendas</h3>
+    <p>You've got NY, NJ and PA within driving distance, which is the whole reason you have that territory.</p>
+    <ul>
+      <li>Build a list of associations and industry groups your best accounts belong to</li>
+      <li>Go to the meetings</li>
+      <li>Then get on the agenda — <mark>you show up and teach, you don't pitch</mark></li>
+      <li>Count it like prospecting: point a block of dials and LinkedIn messages at booking talks</li>
+    </ul>
+
+    <details>
+      <summary>👀 LinkedIn and the list — what to keep doing, and the one change</summary>
+      <div class="inner">
+        <p class="lead-in">Keep doing:</p>
+        <ul>
+          <li>Connect with anyone who looks like a strong fit, note kept high-level and human</li>
+          <li>Reference the connection on the next attempt</li>
+          <li>Email behind every call — no reason to let the opportunity slip by</li>
+        </ul>
+        <p class="lead-in">The one change:</p>
+        <ul>
+          <li>Load contacts into HubSpot in batches of 50–100, not all 600</li>
+          <li>Work that batch for a week before you add the next</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+</div>
+
+<!-- ============ SCOREBOARD ============ -->
+<div class="view" id="v-score" style="--accent:#F05A28">
+  <div class="sec-head" data-head="score"></div>
+
+  <section class="rule">
+    <p class="num">RULE 7</p>
+    <h3>Set the goal on the behavior, never the outcome</h3>
+    <p>The second you set the goal on the result, you've lost it.</p>
+    <ul>
+      <li>The goal is that the words come out of your mouth a set number of times</li>
+      <li>Whether anything lands isn't your business that month</li>
+      <li><mark>Dan asks for 7 a month, went three weeks with nothing, then two really good ones out of nowhere</mark></li>
+      <li>Put it on the whiteboard where you can see it — Dan keeps a big 7 on his and marks it off</li>
+    </ul>
+
+    <div class="tracker" id="tracker"></div>
+      <p class="tnote">Tap a target number to change it.</p>
+    <p class="tnote"><button class="treset" type="button" id="reset">Reset month</button></p>
+
+    <div class="dont">
+      <span class="label">Where this goes wrong</span>
+      <p>"I'll ask when it feels right." It never feels right. Set the number, mark the tally, and let the outcome take care of itself.</p>
+    </div>
+  </section>
+
+  <section class="rule">
+    <p class="num">EACH WEEK</p>
+    <h3>The list</h3>
+    <ul class="check">
+      <li><input type="checkbox" id="c1"><span>Load the next 50–100 contacts into HubSpot and work only those</span></li>
+      <li><input type="checkbox" id="c2"><span>Rewrite one pain point using something a real prospect or customer said</span></li>
+      <li><input type="checkbox" id="c3"><span>Use the advice ask at least three times after a brush-off</span></li>
+      <li><input type="checkbox" id="c4"><span>Ask every new signer why they switched, and write it down verbatim</span></li>
+      <li><input type="checkbox" id="c5"><span>Ask for a referral, and close it with the one-line-intro request</span></li>
+      <li><input type="checkbox" id="c6"><span>Add one association or speaking target to the list</span></li>
+    </ul>
+  </section>
+</div>
+
+<!-- ============ ALL TOGETHER ============ -->
+<div class="view recap" id="v-all" style="--accent:#21245C">
+  <div class="sec-head" data-head="all"></div>
+  <ol>
+    <li>Work one batch of 50–100 contacts at a time, not the whole list.</li>
+    <li>Run the pattern interrupt and the 30-second commercial exactly as written.</li>
+    <li>Open with pain points about what's imperfect in the tool they already have.</li>
+    <li>When they brush you off, take the sales hat off and ask their advice for your next call. Get the answer, say thanks, hang up.</li>
+    <li>Use what they told you on the very next dial.</li>
+    <li>Interview every customer who switches to you, and feed their words back into step 3.</li>
+    <li>The moment they sign, ask for the referral: your real number, then traits and places they'd recognize.</li>
+    <li>When they give you a name, ask them to tell that person about their experience and send a one-line intro email.</li>
+    <li>Point part of your week at booking talks with the associations your best accounts belong to.</li>
+    <li>Tally the behaviors on the whiteboard. Ignore the outcome until the month is over.</li>
+  </ol>
+  <div class="takeaway">
+    If you remember nothing else: <b>the pain menu and the referral ask are the only two things you need to get right.</b> Everything else you can already do in your sleep.
+  </div>
+</div>
+
+<footer>
+  Dan Faber, Lushin<br>
+  <a href="mailto:dan@lushin.com">dan@lushin.com</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* =======================================================================
+     SECTIONS — to add one, add a line here and a matching
+     <div class="view" id="v-YOURID"> block in the HTML above. Nothing else.
+     ======================================================================= */
+  var SECTIONS = [
+    { id:"call",  nav:"On the call", ctx:"Rules 1–3", big:"On the call",
+      grad:"radial-gradient(120% 140% at 15% 0%, #2b3080 0%, #21245C 42%, #00ADED 140%)",
+      glow:"rgba(33,36,92,.30)",
+      icon:'<path d="M15.5 21A13.5 13.5 0 0 1 3 8.5V5.5A2.5 2.5 0 0 1 5.5 3h1.8a1 1 0 0 1 .97.76l1 4a1 1 0 0 1-.28.96L7.5 10.5a12 12 0 0 0 6 6l1.78-1.49a1 1 0 0 1 .96-.28l4 1a1 1 0 0 1 .76.97v1.8A2.5 2.5 0 0 1 18.5 21Z"/>' },
+
+    { id:"ref",   nav:"Referrals", ctx:"Rules 4–5", big:"Referrals",
+      grad:"linear-gradient(135deg, #E34554 0%, #F05A28 100%)",
+      glow:"rgba(227,69,84,.28)",
+      icon:'<circle cx="9" cy="8" r="3.1"/><path d="M3.4 20a5.6 5.6 0 0 1 11.2 0"/><circle cx="17.6" cy="9.6" r="2.4"/><path d="M16.2 15.2A5 5 0 0 1 21 20"/>' },
+
+    { id:"off",   nav:"Off the phone", ctx:"Rule 6", big:"Off the phone",
+      grad:"radial-gradient(120% 140% at 15% 0%, #0045C2 0%, #0057cf 45%, #00ADED 135%)",
+      glow:"rgba(0,69,194,.28)",
+      icon:'<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10" r="2.4"/>' },
+
+    { id:"score", nav:"Scoreboard", ctx:"Rule 7", big:"Scoreboard",
+      grad:"linear-gradient(135deg, #F05A28 0%, #FAB040 100%)",
+      glow:"rgba(240,90,40,.28)",
+      icon:'<path d="M3.5 7.2 5.4 9.1 8.9 5.6"/><path d="M12.6 7.3H20"/><path d="M3.5 15.2l1.9 1.9 3.5-3.5"/><path d="M12.6 15.3H20"/>' },
+
+    { id:"all",   nav:"All together", ctx:"Start to finish", big:"Tying it all together", wide:true,
+      grad:"radial-gradient(120% 200% at 10% 0%, #33366e 0%, #21245C 55%, #0d0f2e 130%)",
+      glow:"rgba(33,36,92,.30)",
+      icon:'<path d="M5.5 21V4"/><path d="M5.5 5h11l-1.7 3.2L16.5 11.4h-11"/>' }
+  ];
+
+  function svg(inner){
+    return '<svg viewBox="0 0 24 24" aria-hidden="true">' + inner + '</svg>';
+  }
+
+  /* ---- build nav ---- */
+  var nav = document.getElementById("nav");
+  var links = [{id:"home", nav:"Home"}].concat(SECTIONS);
+  links.forEach(function(s){
+    var a = document.createElement("a");
+    a.href = "#" + s.id;
+    a.textContent = s.nav;
+    a.setAttribute("data-id", s.id);
+    nav.appendChild(a);
+  });
+
+  /* ---- build home tiles ---- */
+  var tiles = document.getElementById("tiles");
+  SECTIONS.forEach(function(s){
+    var a = document.createElement("a");
+    a.className = "tile" + (s.wide ? " tile-wide" : "");
+    a.href = "#" + s.id;
+    a.style.background = s.grad;
+    a.style.boxShadow = "0 14px 34px " + s.glow;
+    a.innerHTML =
+      '<div class="ico">' + svg(s.icon) + '</div>' +
+      '<div><p class="ctx">' + s.ctx + '</p><p class="big">' + s.big + '</p></div>';
+    tiles.appendChild(a);
+  });
+
+  /* ---- build section headers (same gradient as the tile) ---- */
+  SECTIONS.forEach(function(s){
+    var h = document.querySelector('[data-head="' + s.id + '"]');
+    if(!h) return;
+    h.style.background = s.grad;
+    h.style.boxShadow = "0 14px 34px " + s.glow;
+    h.innerHTML = '<p class="ctx">Greg</p><h2>' + s.big + '</h2>';
+  });
+
+  /* ---- hash routing: every view is addressable ---- */
+  function route(){
+    var id = (location.hash || "#home").slice(1);
+    if(!document.getElementById("v-" + id)) id = "home";
+    Array.prototype.forEach.call(document.querySelectorAll(".view"), function(v){
+      v.classList.toggle("on", v.id === "v-" + id);
+    });
+    Array.prototype.forEach.call(nav.querySelectorAll("a"), function(a){
+      a.classList.toggle("on", a.getAttribute("data-id") === id);
+    });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+  route();
+
+  /* ---- storage, guarded so the page still works if it's blocked ---- */
+  var KEY = "greg-outbound-v2";
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)) || {}; }catch(e){ return {}; } }
+  function save(){ try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){} }
+  var state = load();
+
+  /* =======================================================================
+     TRACKER — add a row by adding a line here. Targets are only a starting
+     point; Greg can tap any target number on the page and change it.
+     ======================================================================= */
+  var GOALS = [
+    { id:"asks",   name:"Referral asks",            note:"The words come out of your mouth",  target:7 },
+    { id:"advice", name:"Advice asks",              note:"After a brush-off",                 target:12 },
+    { id:"switch", name:"Switch interviews",        note:"Every customer who moves to you",   target:3 },
+    { id:"talks",  name:"Talk targets contacted",   note:"Associations and industry groups",  target:4 },
+    { id:"intros", name:"One-line intros requested",note:"Every time you get a name",         target:5 }
+  ];
+
+  var host = document.getElementById("tracker");
+
+  GOALS.forEach(function(g){
+    if(typeof state[g.id] !== "number") state[g.id] = 0;
+    if(typeof state[g.id + "-t"] !== "number") state[g.id + "-t"] = g.target;
+
+    var row = document.createElement("div");
+    row.className = "trow";
+
+    var minus = document.createElement("button");
+    minus.type = "button"; minus.className = "tbtn"; minus.textContent = "−";
+    minus.setAttribute("aria-label", "Subtract one " + g.name);
+
+    var name = document.createElement("div");
+    name.className = "tname";
+    var b = document.createElement("b"); b.textContent = g.name;
+    var s = document.createElement("span"); s.textContent = g.note;
+    name.appendChild(b); name.appendChild(s);
+
+    var count = document.createElement("div");
+    count.className = "tcount";
+    var done = document.createElement("span");
+    var slash = document.createElement("span"); slash.textContent = "/";
+    var tgt = document.createElement("input");
+    tgt.type = "number"; tgt.min = "1"; tgt.inputMode = "numeric";
+    tgt.value = state[g.id + "-t"];
+    tgt.setAttribute("aria-label", "Monthly target for " + g.name);
+    count.appendChild(done); count.appendChild(slash); count.appendChild(tgt);
+
+    var plus = document.createElement("button");
+    plus.type = "button"; plus.className = "tbtn"; plus.textContent = "+";
+    plus.setAttribute("aria-label", "Add one " + g.name);
+
+    row.appendChild(minus); row.appendChild(name); row.appendChild(count); row.appendChild(plus);
+
+    var bar = document.createElement("div");
+    bar.className = "bar";
+    var fill = document.createElement("i");
+    bar.appendChild(fill);
+
+    host.appendChild(row);
+    host.appendChild(bar);
+
+    function paint(){
+      var n = state[g.id];
+      var t = state[g.id + "-t"] || 1;
+      var hit = n >= t;
+      done.textContent = n;
+      count.className = "tcount" + (hit ? " hit" : "");
+      fill.style.width = Math.min(100, (n / t) * 100) + "%";
+      fill.className = hit ? "hit" : "";
+    }
+    plus.addEventListener("click", function(){ state[g.id]++; save(); paint(); });
+    minus.addEventListener("click", function(){
+      if(state[g.id] > 0){ state[g.id]--; save(); paint(); }
+    });
+    tgt.addEventListener("change", function(){
+      var v = parseInt(tgt.value, 10);
+      if(!v || v < 1){ v = 1; tgt.value = 1; }
+      state[g.id + "-t"] = v; save(); paint();
+    });
+    g._paint = paint;
+    g._tgt = tgt;
+    paint();
+  });
+
+  document.getElementById("reset").addEventListener("click", function(){
+    GOALS.forEach(function(g){ state[g.id] = 0; g._paint(); });
+    save();
+  });
+
+  /* ---- checklist ---- */
+  Array.prototype.forEach.call(document.querySelectorAll(".check input"), function(box){
+    var k = "chk-" + box.id;
+    box.checked = !!state[k];
+    box.addEventListener("change", function(){ state[k] = box.checked; save(); });
+  });
+
+  /* ---- copy buttons ---- */
+  function fallback(text, cb){
+    try{
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      cb();
+    }catch(e){}
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".copy"), function(btn){
+    btn.addEventListener("click", function(){
+      var parts = [];
+      Array.prototype.forEach.call(btn.parentNode.querySelectorAll(".say"), function(el){
+        parts.push(el.textContent.trim());
+      });
+      var text = parts.join("\n\n");
+      function ok(){
+        btn.textContent = "Copied";
+        btn.className = "copy done";
+        setTimeout(function(){ btn.textContent = "Copy"; btn.className = "copy"; }, 1600);
+      }
+      if(navigator.clipboard && navigator.clipboard.writeText){
+        navigator.clipboard.writeText(text).then(ok, function(){ fallback(text, ok); });
+      } else {
+        fallback(text, ok);
+      }
+    });
+  });
+})();
+</script>
+</body>
+</html>
